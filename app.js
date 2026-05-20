@@ -1,6 +1,24 @@
 const http = require('http');
+
+const PORT = process.env.PORT || 80;
+const VERSION = 'v5.0';
+
 const server = http.createServer((req, res) => {
-	  res.writeHead(200, {'Content-Type': 'text/html'});
-	  res.end('<h1 style="color:Blue">Blue version - v4.0</h1>');
+  const now = new Date().toISOString();
+
+  res.writeHead(200, {
+    'Content-Type': 'application/json'
+  });
+
+  res.end(JSON.stringify({
+    status: 'healthy',
+    version: VERSION,
+    color: 'blue',
+    timestamp: now,
+    hostname: process.env.HOSTNAME || 'local'
+  }));
 });
-server.listen(80, () => console.log('Server running on port 80'));
+
+server.listen(PORT, () => {
+  console.log(`Blue service ${VERSION} running on port ${PORT}`);
+});
